@@ -5,13 +5,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint \"**/*.{vue,ts,js}\"",
+    "lintFix": "eslint --fix \"**/*.{vue,ts,js}\""
   },
   "dependencies": {
     "vue": "^3.2.25"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^0.18.3",
     "@vitejs/plugin-vue": "^2.2.0",
+    "eslint": "^8.10.0",
     "typescript": "^4.5.4",
     "vite": "^2.8.0",
     "vue-tsc": "^0.29.8"
