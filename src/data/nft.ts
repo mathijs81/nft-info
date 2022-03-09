@@ -6,4 +6,6 @@ export class NftInfo {
 
     mostRecentPrice !: string;
     currentOwner !: string;
+
+    attributes !: { [key: string]: string};
 }
