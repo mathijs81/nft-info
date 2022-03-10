@@ -4,15 +4,27 @@
   <h3>{{ nft.name }}</h3>
   <!-- <small>{{nft.tokenContract}} #{{nft.tokenId}}</small> -->
   <table style="display: inline">
-    <tr v-if="nft.description">
+    <tr>
       <td colspan="2">
         <b>Backstory</b>
         <br>
         <div v-if="!editingDescription">
-          {{ nft.description }}
-          <a class="btn btn-primary" @click="edit(nft.description)">
-            <i class="bi bi-pencil-fill" />
-          </a>
+          <template v-if="nft.backstory !== null">
+            {{ nft.backstory.description }}
+            <!-- added by... at timestamp -->
+            <a
+              class="btn btn-primary"
+              @click="edit(nft.backstory?.description ?? '')"
+            >
+              <i class="bi bi-pencil-fill" />
+            </a>
+          </template>
+          <template v-else>
+            No backstory yet.
+            <a class="btn btn-primary" @click="edit('Add your backstory')">
+              <i class="bi bi-pencil-fill" />
+            </a>
+          </template>
         </div>
         <div v-else>
           <textarea v-model="nftDescription" />
@@ -48,8 +60,16 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { backstoryService } from '../data/backstorydata';
 import type { NftInfo } from '../data/nft';
 import { formatAddress } from '../util/addresses';
+
+const props = defineProps({
+  nft: {
+    type: Object as () => NftInfo,
+    required: true,
+  },
+});
 
 const editingDescription = ref(false);
 const nftDescription = ref('');
@@ -60,14 +80,7 @@ const edit = (desc: string) => {
 };
 
 const save = () => {
-
+  backstoryService.store(props.nft.tokenContract, props.nft.tokenId, nftDescription.value, '', '');
 };
-
-const props = defineProps({
-  nft: {
-    type: Object as () => NftInfo,
-    required: true,
-  },
-});
 
 </script>

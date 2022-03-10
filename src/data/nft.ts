@@ -1,3 +1,5 @@
+import type { BackstoryData } from './backstorydata';
+
 export class NftInfo {
   tokenContract !: string;
   tokenId !: bigint;
@@ -7,7 +9,7 @@ export class NftInfo {
   mostRecentPrice !: string;
   currentOwner !: string;
 
-  attributes !: Record<string, string>;
+  attributes: Record<string, string> = {};
 
-  description !: string;
+  backstory: BackstoryData | null = null;
 }

@@ -38,26 +38,28 @@ interface CovalentContractData {
   type: string
 }
 
-export async function getNftDetails(contractAddress: string, tokenId: bigint): Promise<NftInfo> {
-  const result = await fetch(`https://api.covalenthq.com/v1/1/tokens/${contractAddress}/nft_metadata/${tokenId}/`,
-    { headers: fetchHeaders });
-  const resultJson = await result.json();
+export class CovalentService {
+  async getNftDetails(contractAddress: string, tokenId: bigint): Promise<NftInfo> {
+    const result = await fetch(`https://api.covalenthq.com/v1/1/tokens/${contractAddress}/nft_metadata/${tokenId}/`,
+      { headers: fetchHeaders });
+    const resultJson = await result.json();
 
-  const covalentNftContract = resultJson.data.items[0] as CovalentContractData;
-  const nft = covalentNftContract.nft_data[0];
+    const covalentNftContract = resultJson.data.items[0] as CovalentContractData;
+    const nft = covalentNftContract.nft_data[0];
 
-  const nftResult = new NftInfo();
-  nftResult.currentOwner = nft.owner;
-  nftResult.imageUrl = nft.external_data.image_256;
-  // nftResult.mostRecentPrice
-  nftResult.name = nft.external_data.name;
-  nftResult.tokenContract = contractAddress;
-  nftResult.tokenId = tokenId;
-  nftResult.attributes = {};
-  if (nft.external_data.attributes)
-    nft.external_data.attributes.forEach(entry => nftResult.attributes[entry.trait_type] = entry.value);
+    const nftResult = new NftInfo();
+    nftResult.currentOwner = nft.owner;
+    nftResult.imageUrl = nft.external_data.image_256;
+    // nftResult.mostRecentPrice
+    nftResult.name = nft.external_data.name;
+    nftResult.tokenContract = contractAddress;
+    nftResult.tokenId = tokenId;
+    nftResult.attributes = {};
+    if (nft.external_data.attributes)
+      nft.external_data.attributes.forEach(entry => nftResult.attributes[entry.trait_type] = entry.value);
 
-  // console.log(nft);
-  // console.log(nftResult);
-  return nftResult;
+    // console.log(nft);
+    // console.log(nftResult);
+    return nftResult;
+  }
 }

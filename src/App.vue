@@ -7,17 +7,17 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { ref } from 'vue';
-import { NftInfo } from './data/nft';
 import NftInfoVue from './components/NftInfo.vue';
-import { getNftDetails } from './data/covalent';
-import { fetchHeaders } from './data/config';
+import { getNftDetails } from './data/datasource';
+import { NftInfo } from './data/nft';
 
 const address = '0xf1987f66553460a4f0730ce17484f5a9a2e883a6';
 
 const nft = ref(new NftInfo());
 nft.value.tokenContract = address;
 // nft.value.tokenId = BigInt(4020);
-nft.value.tokenId = BigInt(3498);
+// nft.value.tokenId = BigInt(3498);
+nft.value.tokenId = BigInt(46);
 
 getNftDetails(nft.value.tokenContract, nft.value.tokenId).then(x => nft.value = x);
 </script>

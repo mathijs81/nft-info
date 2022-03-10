@@ -1,35 +1,4 @@
 # Fastify & Typescript App
 
-> Fastify & TypeScript starter repository.
+Fastify & TypeScript app to receive backstory queries and updates from the nft-info panel.
 
-## Installation
-
-```bash
-$ git clone https://github.com/Matschik/fastify-typescript-starter.git
-$ cd fastify-typescript-starter
-$ yarn install
-```
-
-## Usage
-
-### Development
-```bash
-# Required: typescript watch compilation
-$ yarn watch
-
-# Required: development server with hot reload (nodemon)
-$ yarn dev
-
-# Format with prettier
-$ yarn format
-```
-
-### Production
-
-```bash
-# build for production
-$ yarn build
-
-# start production app
-$ yarn start
-```
