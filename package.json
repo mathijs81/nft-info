@@ -10,12 +10,17 @@
     "lintFix": "eslint --fix \"**/*.{vue,ts,js}\""
   },
   "dependencies": {
+    "bootstrap": "^5.1.3",
+    "bootstrap-icons": "^1.8.1",
+    "nft.storage": "^6.0.2",
     "vue": "^3.2.25"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.18.3",
+    "@types/bootstrap": "^5.1.9",
     "@vitejs/plugin-vue": "^2.2.0",
     "eslint": "^8.10.0",
+    "sass": "^1.49.9",
     "typescript": "^4.5.4",
     "vite": "^2.8.0",
     "vue-tsc": "^0.29.8"

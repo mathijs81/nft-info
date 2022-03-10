@@ -8,4 +8,6 @@ export class NftInfo {
   currentOwner !: string;
 
   attributes !: Record<string, string>;
+
+  description !: string;
 }
