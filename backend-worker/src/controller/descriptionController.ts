@@ -1,16 +1,19 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { TableLandService } from '../data/tableland';
 import { IpfsService } from '../data/ipfs';
+import { TableLandService } from '../data/tableland';
+import { fetchOwnerOf, verifySignature } from '../util/ether';
 
 interface PostRequest {
   contract: string
   tokenId: string
   description: string
   postAddress: string
-  signature: string
+  signature?: string
 }
 
 interface BackstoryData {
+  contract: string
+  tokenId: string
   description: string
   postedby: string
   timestamp: number
@@ -54,21 +57,30 @@ export default async function descriptionController(fastify: FastifyInstance) {
     const id = parseInt(request.tokenId.toString() ?? '');
     reply.header('Access-Control-Allow-Origin', '*');
     if (typeof request.contract !== 'string' || isNaN(id) || id < 0 || !request.contract.startsWith('0x')
-        || !request.contract.match(/^0x[a-fA-F0-9]{40}$/)) {
+        || !request.contract.match(/^0x[a-fA-F0-9]{40}$/))
       return reply.code(400).send('invalid contract / id parameters');
-    }
-    else {
-      const data: BackstoryData = {
-        description: request.description,
-        postedby: 'TODO',
-        timestamp: Date.now(),
-      };
-      console.log('going to save', data);
-      const cid = await ipfs.storeBlob(data);
-      console.log('saved IPFS', cid, 'now tableland');
-      // return tableland.fetch(contract, id);
-      await tableland.store(request.contract, id, cid);
-      return 'ok';
-    }
+
+    const reqWithoutSig = Object.assign({}, request);
+    reqWithoutSig.signature = undefined;
+    if (!verifySignature(JSON.stringify(reqWithoutSig), request.postAddress, request.signature ?? ''))
+      return reply.code(403).send('signature incorrect');
+
+    const currentOwner = await fetchOwnerOf(request.contract, request.tokenId);
+    if (currentOwner !== request.postAddress)
+      return reply.code(403).send(`current owner is ${currentOwner} instead of ${request.postAddress}`);
+
+    const data: BackstoryData = {
+      contract: request.contract,
+      tokenId: request.tokenId,
+      description: request.description,
+      postedby: request.postAddress,
+      timestamp: Date.now(),
+    };
+    console.log('going to save', data);
+    const cid = await ipfs.storeBlob(data);
+    console.log('saved IPFS', cid, 'now tableland');
+    // return tableland.fetch(contract, id);
+    await tableland.store(request.contract, id, cid);
+    return 'ok';
   });
 }

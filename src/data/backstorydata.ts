@@ -1,4 +1,5 @@
 
+// const server = 'https://nft-info.vercel.app';
 const server = process.env.NODE_ENV === 'development' ? 'http://localhost:3006' : 'https://nft-info.vercel.app';
 const endPoint = `${server}/api/desc`;
 
@@ -22,7 +23,14 @@ interface PostRequest {
   tokenId: string
   description: string
   postAddress: string
-  signature: string
+  signature?: string
+}
+
+export function createMessageForSignature(contract: string, tokenId: bigint, description: string, postAddress: string) {
+  const request: PostRequest = {
+    contract, tokenId: tokenId.toString(), description, postAddress,
+  };
+  return JSON.stringify(request);
 }
 
 /**
@@ -32,7 +40,7 @@ interface PostRequest {
 class CentralizedServerService {
   async query(contract: string, tokenId: bigint): Promise<BackstoryData | null> {
     const result = (await (await fetch(`${endPoint}/query?contract=${contract}&id=${tokenId}`))?.json()) as (DescriptionData | null);
-    if (!result)
+    if (!result || !result.ipfs_cid)
       return null;
     const ipfsResult = (await (await fetch(ipfsUrl(result.ipfs_cid))).json()) as BackstoryData;
     ipfsResult.timestamp = result.timestamp;

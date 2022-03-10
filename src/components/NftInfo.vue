@@ -12,10 +12,7 @@
           <template v-if="nft.backstory !== null">
             {{ nft.backstory.description }}
             <!-- added by... at timestamp -->
-            <a
-              class="btn btn-primary"
-              @click="edit(nft.backstory?.description ?? '')"
-            >
+            <a class="btn btn-primary" @click="edit(nft.backstory?.description ?? '')">
               <i class="bi bi-pencil-fill" />
             </a>
           </template>
@@ -31,6 +28,9 @@
           <a class="btn btn-primary" @click="save">
             <i class="bi bi-save" />
           </a>
+        </div>
+        <div v-if="error" class="alert alert-danger">
+          {{ error }}
         </div>
       </td>
     </tr>
@@ -60,9 +60,10 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { backstoryService } from '../data/backstorydata';
+import { backstoryService, createMessageForSignature } from '../data/backstorydata';
 import type { NftInfo } from '../data/nft';
 import { formatAddress } from '../util/addresses';
+import { walletService } from '../util/wallet';
 
 const props = defineProps({
   nft: {
@@ -73,14 +74,32 @@ const props = defineProps({
 
 const editingDescription = ref(false);
 const nftDescription = ref('');
+const error = ref('');
 
 const edit = (desc: string) => {
   nftDescription.value = desc;
   editingDescription.value = true;
 };
 
-const save = () => {
-  backstoryService.store(props.nft.tokenContract, props.nft.tokenId, nftDescription.value, '', '');
+const save = async() => {
+  error.value = '';
+  try {
+    if (walletService.address.value == null)
+      await walletService.connect();
+    const address = walletService.address.value;
+    if (!address)
+      throw new Error('You need to connect with metamask first, try again');
+    const signature = await walletService.signMessage(createMessageForSignature(props.nft.tokenContract, props.nft.tokenId, nftDescription.value, address));
+
+    await backstoryService.store(props.nft.tokenContract, props.nft.tokenId, nftDescription.value, address, signature);
+  }
+  catch (e) {
+    if ((e as Error).message)
+      error.value = (e as Error).message;
+
+    else
+      error.value = e as string;
+  }
 };
 
 </script>
