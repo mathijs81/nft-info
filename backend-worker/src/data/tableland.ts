@@ -13,7 +13,7 @@ function createStatementPayload(statement: string, controller: string): string {
         "id": 1,
         "params": [{
           "controller": "${controller}",
-          "statement": "${statement.replaceAll('"', '\\"')}"
+          "statement": "${statement}"
         }]
     }`;
 }
@@ -23,6 +23,8 @@ export interface DescriptionData {
   timestamp: number
 }
 
+// Note: this code doesn't do any sanitizing & escaping. Make sure that parameters
+// are sanitized before calling this class.
 export class TableLandService {
   async store(contract_: string, id: number, cid: string) {
     const contract = contract_.toLowerCase();
