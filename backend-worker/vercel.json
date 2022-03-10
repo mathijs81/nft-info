@@ -1,8 +1,13 @@
-{
+{    
     "rewrites": [
         {
             "source": "/(.*)",
-            "destination": "/serverless.ts"
+            "destination": "api/serverless.ts"
         }
-    ]
+    ],
+    "functions": {
+        "api/serverless.ts": {
+            "includeFiles": "static/**"
+        }
+    }
 }

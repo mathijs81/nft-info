@@ -1,8 +1,9 @@
 import * as dotenv from 'dotenv';
-import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+
 // Require the framework
 import Fastify from 'fastify';
-import router from './router';
+import router from '../src/router';
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ const app = Fastify({
 
 app.register(router);
 
-export default async(req: FastifyRequest, res: FastifyReply) => {
+export default async(req: VercelRequest, res: VercelResponse) => {
   await app.ready();
   app.server.emit('request', req, res);
 };
