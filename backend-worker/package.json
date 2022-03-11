@@ -7,6 +7,7 @@
     "dev": "cross-env NODE_ENV=development nodemon",
     "format": "prettier --write \"src/**/*.ts\"",
     "build": "rimraf dist && tsc",
+    "vercel-build": "rimraf vercel-dist;cd ..;rimraf dist;npm i;npm run build;cp -a dist backend-worker/vercel-dist;cd backend-worker",
     "start": "node dist/index.js"
   },
   "license": "MIT",
