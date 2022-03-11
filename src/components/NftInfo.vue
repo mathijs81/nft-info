@@ -65,40 +65,42 @@
     </table>
     <div>
       <b class="pb-1">Transaction history</b>
-      <table class="info-table trans-table">
-        <tr>
-          <th>Type</th>
-          <th colspan="2">
-            Price
-          </th>
-          <th>From</th>
-          <th>To</th>
-          <th>Time</th>
-        </tr>
-        <tr v-for="(row, index) of nft.transactionHistory.transactions" :key="'trans' + index">
-          <td>{{ typeName(row.type) }}</td>
+      <div class="mw-100 overflow-auto">
+        <table class="info-table trans-table">
+          <tr>
+            <th>Type</th>
+            <th colspan="2">
+              Price
+            </th>
+            <th>From</th>
+            <th>To</th>
+            <th>Time</th>
+          </tr>
+          <tr v-for="(row, index) of nft.transactionHistory.transactions" :key="'trans' + index">
+            <td>{{ typeName(row.type) }}</td>
 
-          <td class="text-end">
-            <span v-if="row.valueEth">
-              <b>Ξ{{ row.valueEth }}</b>
-            </span>
-          </td>
-          <td class="text-end">
-            <span v-if="row.valueEth">
-              <small>${{ row.valueDollar }}</small>
-            </span>
-          </td>
-          <td class="text-muted">
-            {{ formatAddress(row.sourceAddr) }}
-          </td>
-          <td class="text-muted">
-            {{ formatAddress(row.destAddr) }}
-          </td>
-          <td class="text-end">
-            {{ dayjs(row.timestamp).fromNow() }}
-          </td>
-        </tr>
-      </table>
+            <td class="text-end">
+              <span v-if="row.valueEth">
+                <b>Ξ{{ row.valueEth }}</b>
+              </span>
+            </td>
+            <td class="text-end">
+              <span v-if="row.valueEth">
+                <small>${{ row.valueDollar }}</small>
+              </span>
+            </td>
+            <td class="text-muted">
+              {{ formatAddress(row.sourceAddr) }}
+            </td>
+            <td class="text-muted">
+              {{ formatAddress(row.destAddr) }}
+            </td>
+            <td class="text-end text-nowrap">
+              {{ dayjs(row.timestamp).fromNow() }}
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </template>

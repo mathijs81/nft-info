@@ -1,7 +1,9 @@
 
 <template>
   <div class="container app">
-    <h1>Info widget demo</h1>
+    <h1>NFT Info panel for collections</h1>
+    <h5>BuildQuest 2022</h5>
+    <h6><a href="https://github.com/mathijs81/nft-info" target="_blank">See the source repo for more info</a></h6>
     <select class="form-select mb-2 w-auto mx-auto">
       <option
         v-for="(item, index) of options"
