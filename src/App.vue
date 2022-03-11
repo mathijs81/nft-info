@@ -50,7 +50,7 @@ interface Option {
 }
 
 const options = [
-  { contract: '0xf1987f66553460a4f0730ce17484f5a9a2e883a6', tokenId: '670', name: 'Goofball' },
+  { contract: '0xf1987f66553460a4f0730ce17484f5a9a2e883a6', tokenId: '670', name: 'Goofball Gang' },
   { contract: '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d', tokenId: '3017', name: 'Bored Ape' },
   { contract: '0xe785e82358879f061bc3dcac6f0444462d4b5330', tokenId: '2905', name: 'World of Women' },
 ];

@@ -1,13 +1,26 @@
 
 <template>
-  <div class="position-relative">
-    <div v-if="nft.externalUrl" class="position-absolute top-0 end-0">
-      <a target="_new" :href="nft.externalUrl" class="btn btn-outline-secondary">
+  <div>
+    <h3>{{ nft.name }}</h3>
+    <div>
+      <img v-if="nft.imageUrl" :src="nft.imageUrl" class="nft-image pb-3">
+    </div>
+    <div class="btn-group mb-3">
+      <a
+        v-if="nft.externalUrl"
+        target="_new"
+        :href="nft.externalUrl"
+        class="btn btn-outline-secondary outgoing-link"
+      >
         <i class="bi bi-box-arrow-up-right" />
       </a>
+      <a target="_new" :href="openseaUrl" class="btn btn-outline-secondary outgoing-link">
+        <img src="/opensea.svg">
+      </a>
+      <a target="_new" :href="looksrareUrl" class="btn btn-outline-secondary outgoing-link">
+        <img src="/looksrare.svg">
+      </a>
     </div>
-    <h3>{{ nft.name }}</h3>
-    <img v-if="nft.imageUrl" :src="nft.imageUrl" class="nft-image pb-3">
     <!-- <small>{{nft.tokenContract}} #{{nft.tokenId}}</small> -->
     <div class="pb-3">
       <b>Backstory</b>
@@ -18,7 +31,11 @@
             {{ nft.backstory.description }}
           </div>
           <!-- added by... at timestamp -->
-          <a v-if="couldBeOwner" class="btn btn-primary" @click="edit(nft.backstory?.description ?? '')">
+          <a
+            v-if="couldBeOwner"
+            class="btn btn-primary"
+            @click="edit(nft.backstory?.description ?? '')"
+          >
             <i class="bi bi-pencil-fill" /> Edit
           </a>
         </template>
@@ -177,6 +194,9 @@ const typeName = (type: TransactionType) => {
   }
 };
 
+const openseaUrl = computed(() => `https://opensea.io/assets/${props.nft.tokenContract.toLowerCase()}/${props.nft.tokenId}`);
+const looksrareUrl = computed(() => `https://looksrare.org/collections/${props.nft.tokenContract.toLowerCase()}/${props.nft.tokenId}`);
+
 </script>
 
 <style>
@@ -206,5 +226,11 @@ const typeName = (type: TransactionType) => {
   text-transform: uppercase;
   font-size: smaller;
   font-weight: normal;
+}
+.outgoing-link {
+  vertical-align: middle;
+}
+.outgoing-link img {
+  height: 25px;
 }
 </style>
