@@ -45,11 +45,15 @@ export class CovalentService {
     const resultJson = await result.json();
 
     const covalentNftContract = resultJson.data.items[0] as CovalentContractData;
+    if (!covalentNftContract.nft_data || covalentNftContract.nft_data.length === 0)
+      throw new Error('NFT not found by Covalent');
+
     const nft = covalentNftContract.nft_data[0];
 
     const nftResult = new NftInfo();
     nftResult.currentOwner = nft.owner;
     nftResult.imageUrl = nft.external_data.image_256;
+    nftResult.externalUrl = nft.external_data.external_url;
     // nftResult.mostRecentPrice
     nftResult.name = nft.external_data.name;
     nftResult.tokenContract = contractAddress;

@@ -1,42 +1,65 @@
 
 <template>
-  <div class="info-container">
-    <NftInfoVue :nft="nft" />
+  <div class="container app">
+    <h1>Info widget demo</h1>
+    <select class="form-select mb-2 w-auto mx-auto">
+      <option
+        v-for="(item, index) of options"
+        :key="`opt${index}`"
+        :selected="index == selectedIndex"
+        @click="selectedIndex = index"
+      >
+        {{ item.name }}
+      </option>
+    </select>
+    <div class="d-flex justify-content-center">
+      <input v-model="tokenId" type="number" class="form-control d-inline-block number-select">
+      <button class="btn btn-primary ms-2" @click="randomId">
+        Random ID
+      </button>
+    </div>
+
+    <InfoWidget :contract="options[selectedIndex].contract" :token-id="tokenId" class="mt-3 mx-auto" />
   </div>
 </template>
 
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import { ref } from 'vue';
-import NftInfoVue from './components/NftInfo.vue';
-import { getNftDetails } from './data/datasource';
-import { NftInfo } from './data/nft';
+import { ref, watch } from 'vue';
+import InfoWidget from './components/InfoWidget.vue';
 
-const address = '0xf1987f66553460a4f0730ce17484f5a9a2e883a6';
-const tokenId = 670;
+interface Option {
+  contract: string
+  tokenId: string
+  name: string
+}
 
-// const address = '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d';
-// const tokenId = '3017';
+const options = [
+  { contract: '0xf1987f66553460a4f0730ce17484f5a9a2e883a6', tokenId: '670', name: 'Goofball' },
+  { contract: '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d', tokenId: '3017', name: 'Bored Ape' },
+  { contract: '0xe785e82358879f061bc3dcac6f0444462d4b5330', tokenId: '2905', name: 'World of Women' },
+];
 
-const nft = ref(new NftInfo());
-nft.value.tokenContract = address;
-// nft.value.tokenId = BigInt(4020);
-// nft.value.tokenId = BigInt(3498);
-nft.value.tokenId = BigInt(tokenId);
+const selectedIndex = ref(0);
+const tokenId = ref(options[selectedIndex.value].tokenId);
 
-getNftDetails(nft.value.tokenContract, nft.value.tokenId).then(x => nft.value = x);
+watch(selectedIndex, () => {
+  tokenId.value = options[selectedIndex.value].tokenId;
+});
+const randomId = () => {
+  tokenId.value = `${Math.ceil(Math.floor(Math.random() * 3000))}`;
+};
 </script>
 
 <style>
-.info-container {
-  margin: auto;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+.app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
-  max-width: 400px;
+}
+.number-select {
+  width: 8rem !important;
 }
 </style>
