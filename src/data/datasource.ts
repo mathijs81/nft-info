@@ -19,6 +19,11 @@ export async function getNftDetails(contractAddress: string, tokenId: bigint): P
 
   const result = await covalentResult;
   result.backstory = backstory;
-  result.transactionHistory = await transactions;
+  try {
+    result.transactionHistory = await transactions;
+  }
+  catch (e) {
+    console.error(e); // nft port failure, also ignore
+  }
   return result;
 }

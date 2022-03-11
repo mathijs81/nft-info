@@ -18,7 +18,7 @@
             {{ nft.backstory.description }}
           </div>
           <!-- added by... at timestamp -->
-          <a class="btn btn-primary" @click="edit(nft.backstory?.description ?? '')">
+          <a v-if="couldBeOwner" class="btn btn-primary" @click="edit(nft.backstory?.description ?? '')">
             <i class="bi bi-pencil-fill" /> Edit
           </a>
         </template>
@@ -26,7 +26,7 @@
           <div class="text-muted mb-2">
             This NFT has no backstory yet.
           </div>
-          <a class="btn btn-primary" @click="edit('Add your backstory')">
+          <a v-if="couldBeOwner" class="btn btn-primary" @click="edit('Add your backstory')">
             <i class="bi bi-pencil-fill" /> Add one
           </a>
         </template>
@@ -48,7 +48,9 @@
       <div>
         <b>Owned by</b>
       </div>
-      <div>{{ formatAddress(nft.currentOwner, 8, 8) }}</div>
+      <div>
+        <Address :address="nft.currentOwner" :prefix-len="8" :suffix-len="8" />
+      </div>
     </div>
     <table v-if="nft.attributes" class="info-table attr-table mb-3">
       <tr>
@@ -90,10 +92,10 @@
               </span>
             </td>
             <td class="text-muted">
-              {{ formatAddress(row.sourceAddr) }}
+              <Address :address="row.sourceAddr" />
             </td>
             <td class="text-muted">
-              {{ formatAddress(row.destAddr) }}
+              <Address :address="row.destAddr" />
             </td>
             <td class="text-end text-nowrap">
               {{ dayjs(row.timestamp).fromNow() }}
@@ -106,15 +108,16 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue';
-import { ref } from 'vue';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import type { PropType } from 'vue';
+import { computed, ref } from 'vue';
 import { backstoryService, createMessageForSignature } from '../data/backstorydata';
-import { TransactionType } from '../data/nft';
 import type { NftInfo } from '../data/nft';
-import { formatAddress } from '../util/addresses';
+import { TransactionType } from '../data/nft';
+import { addressesEqual } from '../util/addresses';
 import { walletService } from '../util/wallet';
+import Address from './Address.vue';
 
 dayjs.extend(relativeTime);
 
@@ -129,9 +132,19 @@ const editingDescription = ref(false);
 const nftDescription = ref('');
 const error = ref('');
 
-const edit = (desc: string) => {
-  nftDescription.value = desc;
-  editingDescription.value = true;
+const couldBeOwner = computed(() => !walletService.address.value || !props.nft.currentOwner || addressesEqual(walletService.address.value, props.nft.currentOwner));
+
+const tryConnect = async() => {
+  if (walletService.address.value == null)
+    await walletService.connect(true);
+};
+
+const edit = async(desc: string) => {
+  await tryConnect();
+  if (couldBeOwner.value) {
+    nftDescription.value = desc;
+    editingDescription.value = true;
+  }
 };
 
 const cancel = () => { editingDescription.value = false; };
@@ -139,8 +152,7 @@ const cancel = () => { editingDescription.value = false; };
 const save = async() => {
   error.value = '';
   try {
-    if (walletService.address.value == null)
-      await walletService.connect();
+    await tryConnect();
     const address = walletService.address.value;
     if (!address)
       throw new Error('You need to connect with metamask first, try again');

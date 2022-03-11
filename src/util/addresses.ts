@@ -11,3 +11,9 @@ export function formatAddress(address?: string | null, startLen = 4, endLen = 4)
   }
   return address;
 }
+export function addressesEqual(address1: string | undefined | null, address2: string | undefined | null): boolean {
+  if (address1 && address2)
+    return address1.toLowerCase() === address2.toLowerCase();
+
+  return false;
+}

@@ -10,6 +10,8 @@
     "lintFix": "eslint --fix \"**/*.{vue,ts,js}\""
   },
   "dependencies": {
+    "0xsequence": "^0.36.5",
+    "@0xsequence/web3modal": "^2.0.0",
     "@ethersproject/providers": "^5.6.0",
     "@metamask/detect-provider": "^1.2.0",
     "bootstrap": "^5.1.3",

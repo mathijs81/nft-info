@@ -1,6 +1,16 @@
 
 <template>
-  <div class="container app">
+  <div class="container app position-relative">
+    <div class="position-absolute top-0 end-0 mt-2">
+      <div v-if="connected" class="d-flex align-items-center" @click="walletService.disconnect()">
+        <span class="bg-success rounded-circle p-2 d-inline-block me-1" title="You're connected" /><Address :address="walletService.address.value ?? ''" :suffix-len="10" :no-you="true" />
+      </div>
+      <div v-else>
+        <button class="btn btn-primary" @click="walletService.connect(true)">
+          Connect
+        </button>
+      </div>
+    </div>
     <h1>NFT Info panel for collections</h1>
     <h5>BuildQuest 2022</h5>
     <h6><a href="https://github.com/mathijs81/nft-info" target="_blank">See the source repo for more info</a></h6>
@@ -28,8 +38,10 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import InfoWidget from './components/InfoWidget.vue';
+import { walletService } from './util/wallet';
+import Address from './components/Address.vue';
 
 interface Option {
   contract: string
@@ -52,6 +64,9 @@ watch(selectedIndex, () => {
 const randomId = () => {
   tokenId.value = `${Math.ceil(Math.floor(Math.random() * 3000))}`;
 };
+
+const connected = computed(() => walletService.address.value != null);
+
 </script>
 
 <style>
