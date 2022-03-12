@@ -3,7 +3,7 @@
     <div v-if="error" class="alert alert-danger m-0">
       {{ error }}
     </div>
-    <NftInfoVue v-else-if="!loading" :nft="nft" />
+    <NftInfoVue v-else-if="!loading" :nft="nft" @changed-backstory="(val) => updateBackstory(val)" />
     <div v-else class="spinner-border" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
@@ -13,6 +13,7 @@
 import { ref, watch } from 'vue';
 import { getNftDetails } from '../data/datasource';
 import { NftInfo } from '../data/nft';
+import { walletService } from '../util/wallet';
 import NftInfoVue from './NftInfo.vue';
 
 const props = defineProps({
@@ -46,6 +47,14 @@ watch(props, async() => {
       error.value = `${e}`;
   }
 }, { deep: true, immediate: true });
+
+function updateBackstory(value: string) {
+  nft.value.backstory = {
+    description: value,
+    postedby: walletService.address.value ?? '',
+    timestamp: Date.now(),
+  };
+}
 </script>
 
 <style lang="scss">

@@ -15,7 +15,7 @@ const props = defineProps({
 });
 
 const addressStr = computed(() => formatAddress(props.address, props.prefixLen ?? 4, props.suffixLen ?? 4));
-const isOwner = computed(() => addressesEqual(props.address, walletService.address.value ?? undefined));
+const isOwner = computed(() => addressesEqual(walletService.address.value ?? undefined, props.address));
 
 </script>
 

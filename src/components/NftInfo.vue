@@ -144,6 +144,7 @@ const props = defineProps({
     required: true,
   },
 });
+const emit = defineEmits(['changedBackstory']);
 
 const editingDescription = ref(false);
 const nftDescription = ref('');
@@ -176,11 +177,12 @@ const save = async() => {
     const signature = await walletService.signMessage(createMessageForSignature(props.nft.tokenContract, props.nft.tokenId, nftDescription.value, address));
 
     await backstoryService.store(props.nft.tokenContract, props.nft.tokenId, nftDescription.value, address, signature);
+    editingDescription.value = false;
+    emit('changedBackstory', nftDescription.value);
   }
   catch (e) {
     if ((e as Error).message)
       error.value = (e as Error).message;
-
     else
       error.value = e as string;
   }
