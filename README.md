@@ -1,4 +1,4 @@
-# Nft Info: An easy way to create customizable pages about NFTs
+# NFT Info: An easy way to create customizable pages about NFTs
 
 Submission for the BuildQuest hackathon 2022.
 
@@ -15,23 +15,23 @@ NFT project sites frequently contain a roadmap and news, but usually lack the fu
 The full inventory is usually only available on third-party websites (for instance marketplaces like opensea or blockchain sites like etherscan).
 NFT project creators and communities can't influence the information that is shown or the functionality that is provided.
 
-NFT info is an easily embeddable frontend panel that project creators can use to create their own customizable NFT pages. 
-The panel shows the essential NFT information like the image, current owner and trading history and allows owners to add additional off-chain information to the NFT, like a 'backstory'.
+NFT Info is an easily embeddable frontend panel that project creators can use to create their own customizable NFT pages. 
+The panel shows the essential NFT information like the image, current owner and trading history. It also allows NFT owners to add additional off-chain information to the NFT, like a 'backstory'.
 
-Many future addons are possible:
-- Users coukd annotate their own purchases and sales
+Many future add-ons are possible:
+- Users could annotate their own purchases and sales
 - NFT owners could pin more content next to their NFT ("check out this high-quality print above my desk")
-- a metaverse NFT could add information to the panel about the current whereabouts of this NFT in the metaverse.
+- a metaverse NFT project could show the current whereabouts of their NFTs in the metaverse
 - a game NFT project could show the current scores or capabilities of each NFT character
 
-NFT info is embeddable and extensible so that NFT projects can customize where needed.
+NFT Info is embeddable and extensible so that NFT projects can customize where needed.
 
 ## Tech
 
 The frontend is a Vue app that collects data (image, owner, attributes, transaction history) about the NFT it's showing from two APIs (covalent and nftport).
 
-The user can sign in with metamask or Sequence wallet and if he's the owner of the NFT, he can update the off-chain stored 'backstory' field.
-The backstory data is stored in IPFS blobs, and the mapping of the NFT token to IPFS hash is stored in a tableland table. At this moment, there's a backend server (running on vercel) that verifies the signature is matching the owner's. When tableland supports per-row access in the future, it might be possible to remove this centralized component.
+A user can sign in with Metamask or Sequence wallet and if they're the owner of the NFT, they can update the off-chain stored 'backstory' field.
+The backstory data is stored in IPFS blobs, and the mapping of the NFT token to IPFS hash is stored in a Tableland table. At this moment, there's a backend server (running on Vercel) that verifies that the signature matches the NFT owner's. When Tableland supports per-row access in the future, it might be possible to remove this centralized component.
 
 ## Run locally
 
