@@ -1,8 +1,8 @@
-# An NFT destination page for NFT communities
+# Nft Info: An easy way to create customizable pages about NFTs
 
-This is the repository for the NFT Info submission for the BuildQuest hackathon 2022.
+Submission for the BuildQuest hackathon 2022.
 
-My goal is that NFT owners and the community can make their own go-to place for NFTs.
+My goal is for NFT project creators and the community to create pages about their NFTs where they choose what's important.
 
 ## Try it
 ![Screenshot](https://raw.github.com/mathijs81/nft-info/main/misc/screenshot.png)
@@ -11,19 +11,20 @@ My goal is that NFT owners and the community can make their own go-to place for 
 
 ## Description
 
-NFT project creators frequently create a site with interesting information like a roadmap and news, but the full inventory of NFTs in the collection is frequently not present. However, only
-a page under control of the NFT project itself has the possibility to add information and functionality that's most interesting for the NFT owners.
+NFT project sites frequently contain a roadmap and news, but usually lack the full inventory of NFTs in the collection. 
+The full inventory is usually only available on third-party websites (for instance marketplaces like opensea or blockchain sites like etherscan).
+NFT project creators and communities can't influence the information that is shown or the functionality that is provided.
 
-The various go-to sites for information about NFTs - marketplaces (e.g. OpenSea) and other aggregators (e.g. Etherscan) show generic information and NFT creators and owners can't influence what information is shown on those sites or what functionality is provided.
+NFT info is an easily embeddable frontend panel that project creators can use to create their own customizable NFT pages. 
+The panel shows the essential NFT information like the image, current owner and trading history and allows owners to add additional off-chain information to the NFT, like a 'backstory'.
 
-This project creates an easily embeddable frontend panel that collections can use to provide information about their own NFTs and unlock additional features for community members, like the owner of the NFT.
+Many future addons are possible:
+- Users coukd annotate their own purchases and sales
+- NFT owners could pin more content next to their NFT ("check out this high-quality print above my desk")
+- a metaverse NFT could add information to the panel about the current whereabouts of this NFT in the metaverse.
+- a game NFT project could show the current scores or capabilities of each NFT character
 
-In this prototype, the owner can add an off-chain 'backstory' to his NFT.
-
-Other potential features would be that users can annotate their own purchases and sales, owners could pin more content next to their NFT ("This is my high quality print above my desk"), etc.
-
-If the NFT collection is linked with a metaverse platform, the information page could show information about where this NFT is in the metaverse at this moment. A game NFT collection could show the current scores or capabilities of each character.
-The goal would be to make this prototype easily embeddable and extensible so that NFT collections can customize and add functionality where needed.
+NFT info is embeddable and extensible so that NFT projects can customize where needed.
 
 ## Tech
 
